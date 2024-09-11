@@ -95,8 +95,17 @@ def split_into_train_and_test(x_all_LF, frac_test=0.5, random_state=None):
     M = L - N
 
     # TODO use the first M row ids in shuffled_ids_L to make x_train_MF
+    # x_train_MF = []
+    # for x in range(0, M):
+    #     #take every shuffled id up to M from the shuffled ids, put it into x_train_MF
+    #     x_train_MF.append(x_all_LF[shuffled_ids_L[x]])
+    # x_train_MF = np.vstack(x_train_MF)
+    x_train_MF = x_all_LF[shuffled_ids_L[0:M]]
     # TODO use the remaining N row ids to make x_test_NF
     # HINT Use integer indexing
-
+    x_test_NF = x_all_LF[shuffled_ids_L[M:L]]
+    # for y in range(M, L):
+    #     x_test_NF.append(x_all_LF[shuffled_ids_L[y]])
+    # x_test_NF = np.vstack(x_test_NF)
     # TODO return both x_train_MF and x_test_NF
-    return None, None
+    return x_train_MF, x_test_NF
