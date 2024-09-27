@@ -65,22 +65,19 @@ class LeastSquaresLinearRegressor(object):
         Internal attributes updated:
         * self.w_F (vector of weights for each feature)
         * self.b (scalar real bias, if desired)
-
-        Notes
-        -----
-        The least-squares optimization problem is:
-        
-        .. math:
-            \min_{w \in \mathbb{R}^F, b \in \mathbb{R}}
-                \sum_{n=1}^N (y_n - b - \sum_f x_{nf} w_f)^2
-        '''      
+        '''
         N, F = x_NF.shape
-        
-        # Hint: Use np.linalg.solve
-        # Using np.linalg.inv may cause issues (see day03 lab) 
-        pass # TODO fixme
-
-
+        X_augmented = np.hstack([np.ones((N, 1)), x_NF])
+        # Solve (X^T X)^{-1} X^T y
+        # Always solve theta directly, solving for
+        theta = np.linalg.solve(np.dot(X_augmented.T, X_augmented), np.dot(X_augmented.T, y_N))
+        self.b = theta[0]
+        self.w_F = theta[1:]
+        #steps for future learning, augment x_NF with 1s (add a row at the front full of 1s to account for bias.
+        # This new matrix is X, use it to solve theta, which is equal to theta = [b w1 w2 w3 wf] where the first entry
+        # in theta is the bias and remaining entries are the weights.
+        #theta = (X^T X)^{-1} X^T y
+        # index theta to get your w and b.
     def predict(self, x_MF):
         ''' Make predictions given input features for M examples
 
@@ -96,7 +93,8 @@ class LeastSquaresLinearRegressor(object):
             Each value is the predicted scalar for one example
         '''
         # TODO FIX ME
-        return np.asarray([0.0])
+        y_hat_M = x_MF@self.w_F+self.b
+        return y_hat_M
 
 
 
